@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Southway Load Charts</title>
+  <style>
+    /* 28 chart pages complete one full pass in roughly two minutes. */
+    :root { --scroll-duration: 120s; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #101820; color: white; font-family: Arial, sans-serif; overflow: hidden; }
+    header { position: fixed; z-index: 2; top: 0; left: 0; right: 0; height: 72px; padding: 18px 32px; background: linear-gradient(#101820 72%, transparent); font-size: 28px; font-weight: 700; }
+    #viewport { height: 100vh; overflow: hidden; padding-top: 72px; }
+    #track { animation: scrollCharts var(--scroll-duration) linear infinite; }
+    section { padding: 12px max(24px, calc((100vw - 1100px) / 2)); }
+    h2 { margin: 28px 0 16px; font-size: 26px; }
+    img { display: block; width: 100%; max-width: 1100px; height: auto; margin: 0 auto 24px; background: white; }
+    @keyframes scrollCharts { from { transform: translateY(0); } to { transform: translateY(calc(-100% + 100vh - 72px)); } }
+  </style>
+</head>
+<body>
+  <header>Southway Crane Load Charts</header>
+  <main id="viewport"><div id="track"></div></main>
+  <script>
+    const chartSets = [
+      ['25-35', '25-35', 5],
+      ['40-60E', '40-60e', 6],
+      ['60-80', '60-80', 8],
+      ['Broderson IC200-H', 'broderson-ic200-h', 5],
+      ['Broderson IC250-E', 'broderson-ic250-e', 4]
+    ];
+    const track = document.querySelector('#track');
+    for (const [name, prefix, pages] of chartSets) {
+      const section = document.createElement('section');
+      section.innerHTML = `<h2>${name}</h2>`;
+      for (let page = 1; page <= pages; page++) {
+        const image = document.createElement('img');
+        image.src = `${prefix}-${page}.png`;
+        image.alt = `${name} load chart, page ${page}`;
+        section.append(image);
+      }
+      track.append(section);
+    }
+  </script>
+</body>
+</html>
